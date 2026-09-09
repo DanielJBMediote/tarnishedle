@@ -1,6 +1,6 @@
 # Tarnishedle
 
-Um jogo inspirado em Wordle para descobrir armas de *Elden Ring*. A cada rodada, uma arma é escolhida aleatoriamente e você deve encontrá-la usando as pistas reveladas em cada tentativa.
+Um projeto simples usando Vite/Typescript para mm jogo inspirado em Wordle para descobrir armas de *Elden Ring*. A cada rodada, uma arma é escolhida aleatoriamente e você deve encontrá-la usando as pistas reveladas em cada tentativa.
 
 ## Funcionalidades
 
@@ -16,26 +16,8 @@ Um jogo inspirado em Wordle para descobrir armas de *Elden Ring*. A cada rodada,
 - Vite
 - Tailwind CSS
 
-## Como executar
+## Como Acessar
 
-Pré-requisitos: Node.js e pnpm instalados.
-
-```bash
-pnpm install
-pnpm dev
-```
-
-Depois, abra o endereço exibido pelo Vite no navegador.
-
-## Comandos
-
-```bash
-pnpm dev      # inicia o servidor de desenvolvimento
-pnpm build    # verifica os tipos e gera a build de produção
-pnpm lint     # executa o ESLint
-pnpm preview  # serve a build de produção localmente
-```
-
-Os dados das armas ficam em `src/data/EldenRingWeaponsData.json` e são preparados em `src/data/weapons.ts`.
+O site pode ser acessado pelo Github Pages: [Tarnishedle](https://danieljbmediote.github.io/tarnishedle/)
 
 
