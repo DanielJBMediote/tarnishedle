@@ -4,6 +4,7 @@ import clsx from "clsx";
 import type { MatchFields } from "./gameTypes";
 import arrowUp from "../assets/arrow-up.svg";
 import arrowDown from "../assets/arrow-down.svg";
+import { useLanguage } from "../context/LanguageContext";
 
 type WeaponRowProps = {
   weapon: Weapon;
@@ -16,7 +17,11 @@ const weaponCellClasses =
   "block min-w-0 text-center break-words px-1.75 py-4 text-sm leading-[1.2] text-[#eee8d7]";
 
 export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: WeaponRowProps) {
+  
   const [image, setImage] = useState<string>();
+  const {data, getEffectNames, getElementNames} = useLanguage();
+
+  
 
   useEffect(() => {
     const controller = new AbortController();
@@ -75,7 +80,7 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
           : "bg-[rgba(145,69,54,.42)]",
         )}
         >
-        {weapon.type}
+        { data[weapon.type as keyof typeof data] || weapon.type }
       </span>
       {/* Weapon Weight */}
       <span className={clsx(weaponCellClasses, "inline-flex items-center justify-center gap-1 whitespace-nowrap")}>
@@ -107,7 +112,7 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
           matches.element === "none" && "bg-[rgba(145,69,54,.42)]",
         )}
         >
-        {weapon.elements.join(" / ")}
+        {getElementNames(weapon.elements).join(" / ")}
       </span>
     {/* Weapon Effects */}
       <span
@@ -119,7 +124,7 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
           matches.effects === "none" && "bg-[rgba(145,69,54,.42)]",
         )}
         >
-        {weapon.effects.join(" / ")}
+        {getEffectNames(weapon.effects).join(" / ")}
       </span>
       {/* Weapon Source */}
       <span
@@ -131,7 +136,7 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
             : "bg-[rgba(145,69,54,.42)]",
         )}
       >
-        {weapon.dlc ? "DLC" : "Game Base"}
+        {weapon.dlc ? data["dlc"] : data["game_base"]}
       </span>
     </div>
   );

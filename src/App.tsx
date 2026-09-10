@@ -4,10 +4,13 @@ import type { EffectMatch, ElementMatch, Guess, ScalingMatch } from "./component
 import { WeaponSearch } from "./components/WeaponSearch";
 import { WeaponTable } from "./components/WeaponTable";
 import { weapons, type Weapon } from "./data/weapons";
+import { useLanguage } from "./context/LanguageContext";
 
 const normalize = (value: string) => value.toLowerCase().trim();
 
 function App() {
+  const { data, language, toggleLanguage } = useLanguage();
+
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Weapon[]>([]);
   const [targetWeapon, setTargetWeapon] = useState<Weapon | null>(null);
@@ -100,21 +103,28 @@ function App() {
   const score = Math.max(100, 1000 - (guesses.length - 1) * 100);
 
   return (
-    <main className="relative min-h-screen min-w-[320px] overflow-hidden bg-[radial-gradient(circle_at_50%_-10%,#39412d_0,#1b211b_34%,#111411_72%)] font-serif text-[#eee8d7] before:pointer-events-none before:absolute before:inset-0 before:bg-[linear-gradient(rgba(220,198,130,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(220,198,130,.12)_1px,transparent_1px)] before:bg-size-[54px_54px] before:opacity-[.12]">
+    <main className="relative min-h-screen min-w-[320px] overflow-hidden bg-[radial-gradient(circle_at_50%_-10%,#39412d_0,#1b211b_34%,#111411_72%)] font-serif text-[#eee8d7] before:pointer-events-none before:absolute before:inset-0 before:bg-[linear-gradient(rgba(220,198,130,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(220,198,130,.12)_1px,transparent_1px)] before:bg-size-[54px_54px] before:opacity-[.12] p-2">
       <div
         className="absolute -right-20 -top-60 size-115 rounded-full bg-[#ddc27c] opacity-[.08] blur-[14px]"
         aria-hidden="true"
       />
+      <button
+        type="button"
+        onClick={toggleLanguage}
+        className="rounded border cursor-pointer border-[#69745f] px-3 py-1 font-sans text-xs uppercase tracking-wider text-[#d8c98d] hover:bg-[#39412d]"
+        aria-label="Change language"
+      >
+        {language === "pt" ? "EN" : "PT"}
+      </button>
+      <div className="mb-6 flex justify-end">
+      </div>
       <section className="relative mx-auto w-[calc(100%-40px)] max-w-7xl py-20.5 max-[700px]:w-[calc(100%-28px)] max-[700px]:max-w-135 max-[700px]:pt-13">
         <header className="mb-10.5 flex flex-col items-center text-center">
-          <p className="mb-4.25 text-[11px] font-semibold uppercase tracking-[.24em] leading-[1.2] text-[#cfb86d]">
-            A field guide to the Lands Between
-          </p>
           <h1 className="m-0 text-[clamp(48px,8vw,88px)] font-normal leading-[.95] tracking-[.02em] text-[#f1e9d1]">
-            Tarnishedle
+            {data["game_title"]}
           </h1>
           <p className="mt-5.5 max-w-115 text-[17px] leading-[1.55] text-[#a9ad9d] max-[700px]:text-[15px]">
-            Guess the hidden armament. Each attempt reveals how close you are.
+            {data["game_description"]}
           </p>
         </header>
 

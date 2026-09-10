@@ -1,9 +1,10 @@
 import weaponData from "./EldenRingWeaponsData.json";
 
 export type Scaling = "STR" | "INT" | "DEX" | "FAI" | "ARC";
-export type Effect = "Hemorrhage" | "Poison" | "Frostbite" | "Scarlet Rot" | "Sleep" | "Madness" | "None";
+export type Effect = "hemorrhage" | "poison" | "frostbite" | "scarlet_rot" | "sleep" | "madness" | "none";
 export type WeaponType = string;
-export type Element = "None" | "Magic" | "Fire" | "Lightning" | "Holy";
+
+export type Element = "none" | "magic" | "fire" | "lightning" | "holy";
 
 export type Weapon = {
   name: string;
@@ -25,77 +26,76 @@ export type WeaponsResponse = {
 };
 
 type LocalWeapon = {
-  Name: string;
-  DLC: boolean;
-  "Weapon Type": WeaponType;
-  Weight: string;
-  Physic: number;
-  Magic: number;
-  Fire: number;
-  Lightning: number;
-  Holy: number;
-  "Scarlet Rot": number;
-  Frostbite: number;
-  Hemorrhage: number;
-  Madness: number;
-  Poison: number;
-  Sleep: number;
+  weapon_name: string;
+  is_dlc: boolean;
+  weapon_type: WeaponType;
+  weight: string;
+  physic: number;
+  magic: number;
+  fire: number;
+  lightning: number;
+  holy: number;
+  scarletRot: number;
+  frostbite: number;
+  hemorrhage: number;
+  madness: number;
+  poison: number;
+  sleep: number;
 };
 
-const scalingByCategory: Record<string, Scaling[]> = {
-  Axe: ["STR", "DEX"],
-  Ballista: ["STR"],
-  Bow: ["STR", "DEX"],
-  "Beast Claw": ["STR", "DEX"],
-  "Backhand Blade": ["DEX", "STR"],
-  Claw: ["STR", "DEX"],
-  "Colossal Sword": ["STR", "DEX"],
-  "Colossal Weapon": ["STR"],
-  Crossbow: ["STR", "DEX"],
-  "Curved Greatsword": ["STR", "DEX"],
-  "Curved Sword": ["STR", "DEX"],
-  Dagger: ["DEX", "STR"],
-  Fist: ["STR", "DEX"],
-  "Glintstone Staff": ["INT"],
-  "Glinstone Staff": ["INT"],
-  "Sacred Seal": ["FAI"],
-  Katana: ["DEX", "STR"],
-  "Great Katana": ["DEX", "STR"],
-  "Perfume Bottle": ["DEX", "INT"],
+const scalingByWeaponType: Record<string, Scaling[]> = {
+  axe: ["STR", "DEX"],
+  ballista: ["STR"],
+  bow: ["STR", "DEX"],
+  beast_claw: ["STR", "DEX"],
+  backhand_blade: ["DEX", "STR"],
+  claw: ["STR", "DEX"],
+  colossal_sword: ["STR", "DEX"],
+  colossal_weapon: ["STR"],
+  crossbow: ["STR", "DEX"],
+  curved_greatsword: ["STR", "DEX"],
+  curved_sword: ["STR", "DEX"],
+  dagger: ["DEX", "STR"],
+  fist: ["STR", "DEX"],
+  glintstone_staff: ["INT"],
+  sacred_seal: ["FAI"],
+  katana: ["DEX", "STR"],
+  great_katana: ["DEX", "STR"],
+  perfume_bottle: ["DEX", "INT"],
 };
 
 const getScaling = (weaponType: WeaponType): Scaling[] => {
-  return scalingByCategory[weaponType] ?? ["STR", "DEX"];
+  return scalingByWeaponType[weaponType] ?? ["STR", "DEX"];
 };
 
 const getElements = (weapon: LocalWeapon): Weapon["elements"] => {
   const elements: Element[] = [];
-  if (weapon.Magic > 0) elements.push("Magic");
-  if (weapon.Fire > 0) elements.push("Fire");
-  if (weapon.Lightning > 0) elements.push("Lightning");
-  if (weapon.Holy > 0) elements.push("Holy");
-  return elements.length > 0 ? elements : ["None"];
+  if (weapon.magic > 0) elements.push("magic");
+  if (weapon.fire > 0) elements.push("fire");
+  if (weapon.lightning > 0) elements.push("lightning");
+  if (weapon.holy > 0) elements.push("holy");
+  return elements.length > 0 ? elements : ["none"];
 };
 
 const getEffects = (weapon: LocalWeapon): Effect[] => {
   const effects: Effect[] = [];
-  if (weapon.Hemorrhage > 0) effects.push("Hemorrhage");
-  if (weapon.Poison > 0) effects.push("Poison");
-  if (weapon.Frostbite > 0) effects.push("Frostbite");
-  if (weapon["Scarlet Rot"] > 0) effects.push("Scarlet Rot");
-  if (weapon.Sleep > 0) effects.push("Sleep");
-  if (weapon.Madness > 0) effects.push("Madness");
-  return effects.length > 0 ? effects : ["None"];
+  if (weapon.hemorrhage > 0) effects.push("hemorrhage");
+  if (weapon.poison > 0) effects.push("poison");
+  if (weapon.frostbite > 0) effects.push("frostbite");
+  if (weapon.scarletRot > 0) effects.push("scarlet_rot");
+  if (weapon.sleep > 0) effects.push("sleep");
+  if (weapon.madness > 0) effects.push("madness");
+  return effects.length > 0 ? effects : ["none"];
 };
 
 const toWeapon = (localWeapon: LocalWeapon): Weapon => ({
-  name: localWeapon.Name,
-  type: localWeapon["Weapon Type"],
-  weight: Number(localWeapon.Weight),
+  name: localWeapon.weapon_name,
+  type: localWeapon.weapon_type,
+  weight: Number(localWeapon.weight),
   elements: getElements(localWeapon),
-  scaling: getScaling(localWeapon["Weapon Type"]),
+  scaling: getScaling(localWeapon.weapon_type),
   effects: getEffects(localWeapon),
-  dlc: localWeapon.DLC,
+  dlc: localWeapon.is_dlc,
 });
 
 export const weapons: Weapon[] = (weaponData as LocalWeapon[]).map(toWeapon);
