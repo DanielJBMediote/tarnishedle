@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import type { Weapon } from '../data/weapons';
+import { useLanguage } from '../context/LanguageContext';
 
 type WeaponSearchProps = {
   query: string;
@@ -21,6 +22,7 @@ export function WeaponSearch({
   onClear,
 }: WeaponSearchProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const {getDataValue} = useLanguage();
 
   return (
     <form className="relative mb-13 max-[700px]:mb-9.5" onSubmit={onSubmit}>
@@ -48,7 +50,7 @@ export function WeaponSearch({
           {suggestions.map((weapon) => (
             <button className="border-0 border-b border-[rgba(72,81,68,.65)] bg-transparent px-4.5 py-3.25 text-left text-[#d9d5c5] hover:bg-[#cfb86d] hover:text-[#171a14]" type="button" role="option" key={weapon.name} onClick={() => { onSelect(weapon); setIsOpen(false); }}>
 
-              {weapon.name}
+              {getDataValue(`weapons.${weapon.name}`, weapon.name)}
             </button>
           ))}
         </div>

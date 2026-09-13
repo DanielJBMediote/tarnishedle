@@ -1,14 +1,11 @@
 import type { Weapon } from '../data/weapons';
-
-export type ScalingMatch = 'none' | 'partial' | 'full';
-export type ElementMatch = 'none' | 'partial' | 'full';
-export type EffectMatch = 'none' | 'partial' | 'full';
+import type { MatchingResult } from '../utils/utils';
 
 export type MatchFields = {
   type: boolean;
-  scaling: ScalingMatch;
-  element: ElementMatch;
-  effects: EffectMatch;
+  scaling: MatchingResult;
+  element: MatchingResult;
+  effects: MatchingResult;
   source: boolean;
 };
 

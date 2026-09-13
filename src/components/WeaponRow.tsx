@@ -14,12 +14,12 @@ type WeaponRowProps = {
 };
 
 const weaponCellClasses =
-  "block min-w-0 text-center break-words px-1.75 py-4 text-sm leading-[1.2] text-[#eee8d7]";
+  "flex h-full min-w-0 items-center justify-center overflow-hidden text-center break-words px-1.75 py-2 text-sm leading-[1.2] text-[#eee8d7] line-clamp-2";
 
 export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: WeaponRowProps) {
   
   const [image, setImage] = useState<string>();
-  const {data, getEffectNames, getElementNames} = useLanguage();
+  const { getEffectNames, getElementNames, getDataValue } = useLanguage();
 
   
 
@@ -45,8 +45,8 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
 
   return (
     <div
-      className={clsx("grid grid-cols-11 min-h-22 items-center gap-1.5 py-3.25",
-        "border-t border-[rgba(72,81,68,.65)] font-sans text-sm text-[#c3c6b8] hover:bg-[rgba(207,184,109,.06)] max-[700px]:min-h-19.5 max-[700px]:grid-cols-[52px_1fr_auto] max-[700px]:gap-3 max-[700px]:px-2 max-[700px]:py-2.75")}
+      className={clsx("grid h-22 grid-cols-11 items-center gap-1.5 py-3.25",
+        "border-t border-[rgba(72,81,68,.65)] font-sans text-sm text-[#c3c6b8] hover:bg-[rgba(207,184,109,.06)] max-[700px]:h-19.5 max-[700px]:grid-cols-[52px_1fr_auto] max-[700px]:gap-3 max-[700px]:px-2 max-[700px]:py-2.75")}
       role="row"
     >
       {/* Weapon Image */}
@@ -68,7 +68,7 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
             : "bg-[rgba(145,69,54,.42)]",
         )}
       >
-        {weapon.name}
+        {getDataValue(`weapons.${weapon.name}`, weapon.name)}
       </span>
       {/* Weapon Type */}
       <span
@@ -80,7 +80,7 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
           : "bg-[rgba(145,69,54,.42)]",
         )}
         >
-        { data[weapon.type as keyof typeof data] || weapon.type }
+        { getDataValue(weapon.type) || weapon.type }
       </span>
       {/* Weapon Weight */}
       <span className={clsx(weaponCellClasses, "inline-flex items-center justify-center gap-1 whitespace-nowrap")}>
@@ -136,7 +136,7 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
             : "bg-[rgba(145,69,54,.42)]",
         )}
       >
-        {weapon.dlc ? data["dlc"] : data["game_base"]}
+        { weapon.dlc ? getDataValue("dlc") : getDataValue("game_base")}
       </span>
     </div>
   );

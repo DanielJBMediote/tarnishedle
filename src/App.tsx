@@ -1,15 +1,16 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { VictoryPanel } from "./components/VictoryPanel";
-import type { EffectMatch, ElementMatch, Guess, ScalingMatch } from "./components/gameTypes";
+import type {  Guess } from "./components/gameTypes";
 import { WeaponSearch } from "./components/WeaponSearch";
 import { WeaponTable } from "./components/WeaponTable";
 import { weapons, type Weapon } from "./data/weapons";
 import { useLanguage } from "./context/LanguageContext";
+import { getMatchingResult } from "./utils/utils";
 
 const normalize = (value: string) => value.toLowerCase().trim();
 
 function App() {
-  const { data, language, toggleLanguage } = useLanguage();
+  const { language, toggleLanguage, getDataValue } = useLanguage();
 
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Weapon[]>([]);
@@ -31,55 +32,34 @@ function App() {
 
     const timeoutId = window.setTimeout(() => {
       setSuggestions(
-        weapons.filter((weapon) => normalize(weapon.name).includes(normalizedQuery)).slice(0, 20),
+        weapons.filter((weapon) => normalize(
+          getDataValue(`weapons.${weapon.name}`, weapon.name)
+        ).includes(normalizedQuery)).slice(0, 20),
       );
     }, 150);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isLoading, query]);
+  }, [getDataValue, isLoading, language, query]);
 
   const chooseWeapon = (weapon: Weapon) => setQuery(weapon.name);
 
-  const submitGuess = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmitGuess = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (gameOver) return;
 
     const weapon = weapons.find(
-      (item) => normalize(item.name) === normalize(query),
+      (item) => normalize(item.name) === normalize(query)
+        || normalize(getDataValue(`weapons.${item.name}`, item.name)) === normalize(query),
     );
     if (!weapon || !targetWeapon || guesses.some((guess) => guess.weapon.name === weapon.name))
       return;
 
-    const hasMatchingScaling = weapon.scaling.some((scale) =>
-      targetWeapon.scaling.includes(scale),
-    );
-    const scaling: ScalingMatch = targetWeapon.scaling.every((scale) => weapon.scaling.includes(scale))
-      ? "full"
-      : hasMatchingScaling
-        ? "partial"
-        : "none";
-    const hasMatchingElement = weapon.elements.some((element) =>
-      targetWeapon.elements.includes(element),
-    );
-    const element: ElementMatch =
-      weapon.elements.length === targetWeapon.elements.length &&
-        targetWeapon.elements.every((targetElement) => weapon.elements.includes(targetElement))
-        ? "full"
-        : hasMatchingElement
-          ? "partial"
-          : "none";
-    const hasMatchingEffect = weapon.effects.some((effect) =>
-      targetWeapon.effects.includes(effect),
-    );
-    const effects: EffectMatch = targetWeapon.effects.every((targetEffect) =>
-      weapon.effects.includes(targetEffect),
-    )
-      ? "full"
-      : hasMatchingEffect
-        ? "partial"
-        : "none";
+    const scaling = getMatchingResult(weapon.scaling, targetWeapon.scaling);
+    const element = getMatchingResult(weapon.elements, targetWeapon.elements);
+    const effects = getMatchingResult(weapon.effects, targetWeapon.effects);
+
     const matches = {
       type: weapon.type === targetWeapon.type,
       scaling,
@@ -87,6 +67,8 @@ function App() {
       effects,
       source: weapon.dlc === targetWeapon.dlc,
     };
+
+
     const nextGuesses = [...guesses, { weapon, matches }];
     setGuesses(nextGuesses);
     setQuery("");
@@ -121,10 +103,10 @@ function App() {
       <section className="relative mx-auto w-[calc(100%-40px)] max-w-7xl py-20.5 max-[700px]:w-[calc(100%-28px)] max-[700px]:max-w-135 max-[700px]:pt-13">
         <header className="mb-10.5 flex flex-col items-center text-center">
           <h1 className="m-0 text-[clamp(48px,8vw,88px)] font-normal leading-[.95] tracking-[.02em] text-[#f1e9d1]">
-            {data["game_title"]}
+            {getDataValue("game_title")}
           </h1>
           <p className="mt-5.5 max-w-115 text-[17px] leading-[1.55] text-[#a9ad9d] max-[700px]:text-[15px]">
-            {data["game_description"]}
+            {getDataValue("game_description")}
           </p>
         </header>
 
@@ -133,7 +115,7 @@ function App() {
           suggestions={suggestions}
           disabled={gameOver || isLoading}
           onQueryChange={setQuery}
-          onSubmit={submitGuess}
+          onSubmit={handleSubmitGuess}
           onSelect={chooseWeapon}
           onClear={() => setQuery("")}
         />
