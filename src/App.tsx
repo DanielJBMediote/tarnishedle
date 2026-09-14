@@ -121,7 +121,6 @@ function App() {
         />
 
         <div className="flex items-baseline justify-between border-b border-[#485144] pb-3.5 text-[19px] text-[#e5dcc5]">
-          <span className="text-center">Your guesses</span>
           <span className="text-center font-sans text-[12px] uppercase tracking-[.06em] text-[#818b7b]">
             {guesses.length} {guesses.length === 1 ? "attempt" : "attempts"}
           </span>

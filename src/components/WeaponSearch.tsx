@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import type { Weapon } from '../data/weapons';
 import { useLanguage } from '../context/LanguageContext';
 
-type WeaponSearchProps = {
+interface WeaponSearchProps {
   query: string;
   suggestions: Weapon[];
   disabled: boolean;
@@ -26,7 +26,6 @@ export function WeaponSearch({
 
   return (
     <form className="relative mb-13 max-[700px]:mb-9.5" onSubmit={onSubmit}>
-      <label className="mb-2.5 block text-[14px] tracking-wider text-[#d2cfbf]" htmlFor="weapon-search">Choose your guess</label>
       <div className="flex w-full items-center border border-[#56604d] bg-[rgba(17,20,17,.7)] transition-shadow focus-within:border-[#cfb86d] focus-within:shadow-[0_0_0_3px_rgba(207,184,109,.1)]">
         <span className="pl-4.5 text-center font-sans text-[29px] leading-none text-[#cfb86d]" aria-hidden="true">⌕</span>
         <input
