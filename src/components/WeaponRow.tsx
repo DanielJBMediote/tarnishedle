@@ -46,7 +46,7 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
   return (
     <div
       className={clsx("grid h-22 grid-cols-11 items-center gap-1.5 py-3.25",
-        "border-t border-[rgba(72,81,68,.65)] font-sans text-sm text-[#c3c6b8] hover:bg-[rgba(207,184,109,.06)] max-[700px]:h-19.5 max-[700px]:grid-cols-[52px_1fr_auto] max-[700px]:gap-3 max-[700px]:px-2 max-[700px]:py-2.75")}
+        "border-t border-dark-green font-sans text-sm text-[#c3c6b8] hover:bg-[rgba(207,184,109,.06)] max-[700px]:h-19.5 max-[700px]:grid-cols-[52px_1fr_auto] max-[700px]:gap-3 max-[700px]:px-2 max-[700px]:py-2.75")}
       role="row"
     >
       {/* Weapon Image */}
@@ -64,8 +64,8 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
           "col-span-2",
           weaponCellClasses,
           isCorrectName
-            ? "bg-[rgba(92,145,76,.48)]"
-            : "bg-[rgba(145,69,54,.42)]",
+            ? "bg-green"
+            : "bg-red",
         )}
       >
         {getDataValue(`weapons.${weapon.name}`, weapon.name)}
@@ -76,8 +76,8 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
           weaponCellClasses,
           "whitespace-normal col-span-2",
           matches.type
-          ? "bg-[rgba(92,145,76,.48)]"
-          : "bg-[rgba(145,69,54,.42)]",
+          ? "bg-green"
+          : "bg-red",
         )}
         >
         { getDataValue(weapon.type) || weapon.type }
@@ -96,9 +96,9 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
       <span
         className={clsx(
           weaponCellClasses,
-          matches.scaling === "full" && "bg-[rgba(92,145,76,.48)]",
-          matches.scaling === "partial" && "bg-[rgba(207,137,48,.5)]",
-          matches.scaling === "none" && "bg-[rgba(145,69,54,.42)]",
+          matches.scaling === "full" && "bg-green",
+          matches.scaling === "partial" && "bg-orange",
+          matches.scaling === "none" && "bg-red",
         )}
         >
         {weapon.scaling.join(" / ")}
@@ -107,9 +107,9 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
       <span
         className={clsx(
           weaponCellClasses,
-          matches.element === "full" && "bg-[rgba(92,145,76,.48)]",
-          matches.element === "partial" && "bg-[rgba(207,137,48,.5)]",
-          matches.element === "none" && "bg-[rgba(145,69,54,.42)]",
+          matches.element === "full" && "bg-green",
+          matches.element === "partial" && "bg-orange",
+          matches.element === "none" && "bg-red",
         )}
         >
         {getElementNames(weapon.elements).join(" / ")}
@@ -119,9 +119,9 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
         className={clsx(
           "col-span-2",
           weaponCellClasses,
-          matches.effects === "full" && "bg-[rgba(92,145,76,.48)]",
-          matches.effects === "partial" && "bg-[rgba(207,137,48,.5)]",
-          matches.effects === "none" && "bg-[rgba(145,69,54,.42)]",
+          matches.effects === "full" && "bg-green",
+          matches.effects === "partial" && "bg-orange",
+          matches.effects === "none" && "bg-red",
         )}
         >
         {getEffectNames(weapon.effects).join(" / ")}
@@ -132,8 +132,8 @@ export function WeaponRow({ weapon, targetWeight, matches, isCorrectName }: Weap
           "text-center",
           weaponCellClasses,
           matches.source
-            ? "bg-[rgba(92,145,76,.48)]"
-            : "bg-[rgba(145,69,54,.42)]",
+            ? "bg-green"
+            : "bg-red",
         )}
       >
         { weapon.dlc ? getDataValue("dlc") : getDataValue("game_base")}

@@ -21,3 +21,6 @@ Um projeto simples usando Vite/Typescript para mm jogo inspirado em Wordle para 
 O site pode ser acessado pelo Github Pages: [Tarnishedle](https://danieljbmediote.github.io/tarnishedle/)
 
 
+## Prévia
+
+![preview](public/preview.png)
