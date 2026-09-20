@@ -1,9 +1,10 @@
 {
-  "game_title": "Tarnishedle",
   "game_description": "Adivinhe as armas ocultas. Cada tentativa revela o quão perto você está.",
+  "input_description": "Digite o nome da arma...",
   "victory_title": "Bem adivinhado, Maculado.",
   "victory_description": "{weaponName} era a arma. Você marcou {score} pontos em {attempts} tentativa(s).",
   "play_again": "Jogar novamente",
+  "attempt": "Tentativa",
   "name": "Nome",
   "type": "Tipo de arma",
   "weight": "Peso",

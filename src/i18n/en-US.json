@@ -1,6 +1,4 @@
 {
-  "game_title": "Tarnishedle",
-  "game_description": "Guess the hidden armament. Each attempt reveals how close you are.",
   "name": "Name",
   "type": "Type",
   "weight": "Weight",
@@ -26,7 +24,6 @@
   "fire": "Fire",
   "lightning": "Lightning",
   "holy": "Holy",
-
   "axe": "Axe",
   "ballista": "Ballista",
   "light_bow": "Light Bow",

@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { VictoryPanel } from "./components/VictoryPanel";
-import type {  Guess } from "./components/gameTypes";
+import type { Guess } from "./components/gameTypes";
 import { WeaponSearch } from "./components/WeaponSearch";
 import { WeaponTable } from "./components/WeaponTable";
 import { weapons, type Weapon } from "./data/weapons";
@@ -20,7 +20,9 @@ function App() {
   const [isLoading] = useState(false);
 
   useEffect(() => {
-    setTargetWeapon(weapons[Math.floor(Math.random() * weapons.length)] ?? null);
+    setTargetWeapon(
+      weapons[Math.floor(Math.random() * weapons.length)] ?? null,
+    );
   }, []);
 
   useEffect(() => {
@@ -32,9 +34,13 @@ function App() {
 
     const timeoutId = window.setTimeout(() => {
       setSuggestions(
-        weapons.filter((weapon) => normalize(
-          getDataValue(`weapons.${weapon.name}`, weapon.name)
-        ).includes(normalizedQuery)).slice(0, 20),
+        weapons
+          .filter((weapon) =>
+            normalize(
+              getDataValue(`weapons.${weapon.name}`, weapon.name),
+            ).includes(normalizedQuery),
+          )
+          .slice(0, 20),
       );
     }, 150);
 
@@ -50,10 +56,16 @@ function App() {
     if (gameOver) return;
 
     const weapon = weapons.find(
-      (item) => normalize(item.name) === normalize(query)
-        || normalize(getDataValue(`weapons.${item.name}`, item.name)) === normalize(query),
+      (item) =>
+        normalize(item.name) === normalize(query) ||
+        normalize(getDataValue(`weapons.${item.name}`, item.name)) ===
+          normalize(query),
     );
-    if (!weapon || !targetWeapon || guesses.some((guess) => guess.weapon.name === weapon.name))
+    if (
+      !weapon ||
+      !targetWeapon ||
+      guesses.some((guess) => guess.weapon.name === weapon.name)
+    )
       return;
 
     const scaling = getMatchingResult(weapon.scaling, targetWeapon.scaling);
@@ -68,7 +80,6 @@ function App() {
       source: weapon.dlc === targetWeapon.dlc,
     };
 
-
     const nextGuesses = [...guesses, { weapon, matches }];
     setGuesses(nextGuesses);
     setQuery("");
@@ -76,7 +87,9 @@ function App() {
   };
 
   const resetGame = () => {
-    setTargetWeapon(weapons[Math.floor(Math.random() * weapons.length)] ?? null);
+    setTargetWeapon(
+      weapons[Math.floor(Math.random() * weapons.length)] ?? null,
+    );
     setGuesses([]);
     setQuery("");
     setGameOver(false);
@@ -98,15 +111,17 @@ function App() {
       >
         {language === "pt" ? "EN" : "PT"}
       </button>
-      <div className="mb-6 flex justify-end">
-      </div>
+      <div className="mb-6 flex justify-end"></div>
       <section className="relative mx-auto w-[calc(100%-40px)] max-w-7xl py-20.5 max-[700px]:w-[calc(100%-28px)] max-[700px]:max-w-135 max-[700px]:pt-13">
         <header className="mb-10.5 flex flex-col items-center text-center">
           <h1 className="m-0 text-[clamp(48px,8vw,88px)] font-normal leading-[.95] tracking-[.02em] text-[#f1e9d1]">
-            {getDataValue("game_title")}
+            Tarnishedle
           </h1>
           <p className="mt-5.5 max-w-115 text-[17px] leading-[1.55] text-[#a9ad9d] max-[700px]:text-[15px]">
-            {getDataValue("game_description")}
+            {getDataValue(
+              "game_description",
+              "Guess the hidden armament. Each attempt reveals how close you are.",
+            )}
           </p>
         </header>
 
@@ -122,7 +137,8 @@ function App() {
 
         <div className="flex items-baseline justify-between border-b border-[#485144] pb-3.5 text-[19px] text-[#e5dcc5]">
           <span className="text-center font-sans text-[12px] uppercase tracking-[.06em] text-[#818b7b]">
-            {guesses.length} {guesses.length === 1 ? "attempt" : "attempts"}
+            {guesses.length} {getDataValue("attempt", "attempt")}
+            {guesses.length > 1 ? "s" : ""}
           </span>
         </div>
 
