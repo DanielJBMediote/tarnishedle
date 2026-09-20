@@ -49,7 +49,8 @@ function App() {
     };
   }, [getDataValue, isLoading, language, query]);
 
-  const chooseWeapon = (weapon: Weapon) => setQuery(weapon.name);
+  const chooseWeapon = (weapon: Weapon) =>
+    setQuery(getDataValue(`weapons.${weapon.name}`, weapon.name));
 
   const handleSubmitGuess = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
